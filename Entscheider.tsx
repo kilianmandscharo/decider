@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Instance } from "./Instance";
 import { InstanceAdder } from "./InstanceAdder";
+import { Wheel } from "./Wheel";
 import {
     StyleSheet,
     View,
@@ -18,6 +19,9 @@ export const Entscheider = () => {
     const [decisionActive, setDecisionActive] = useState(false);
     const [winner, setWinner] = useState("");
     const [input, setInput] = useState("");
+    const [state, setState] = useState("table");
+
+    console.log("deciderWinner: ", winner);
 
     const clickHandler = (name: string) => {
         if (name === "") {
@@ -28,6 +32,11 @@ export const Entscheider = () => {
             setInputActive(false);
             setInput("");
         }
+    };
+
+    const updateState = (value: string) => {
+        setWinner(value);
+        setDecisionActive(true);
     };
 
     const handleChange = (text: string) => {
@@ -64,6 +73,32 @@ export const Entscheider = () => {
 
     return (
         <View>
+            <TouchableHighlight style={styles.wheelButton}>
+                <Button
+                    title=""
+                    color="#03DAC5"
+                    onPress={() => {
+                        if (names.length === 0) {
+                            return;
+                        }
+                        setDecisionActive(false);
+                        setState("wheel");
+                    }}
+                />
+            </TouchableHighlight>
+            <TouchableHighlight style={styles.tableButton}>
+                <Button
+                    title=""
+                    color="#03DAC5"
+                    onPress={() => {
+                        if (names.length === 0) {
+                            return;
+                        }
+                        setDecisionActive(false);
+                        setState("table");
+                    }}
+                />
+            </TouchableHighlight>
             <View style={styles.circle2}></View>
             <View style={styles.circle1}></View>
             <View style={styles.headerSection}>
@@ -72,19 +107,28 @@ export const Entscheider = () => {
                 )}
                 {decisionActive && <Text style={styles.header}>{winner}</Text>}
             </View>
-            <View style={styles.instanceSection}>
-                <ScrollView>
-                    {names.map((name, index) => {
-                        return (
-                            <Instance
-                                deleteName={() => deleteName(name)}
-                                key={index}
-                                name={name}
-                            />
-                        );
-                    })}
-                </ScrollView>
-            </View>
+            {state === "table" && (
+                <View style={styles.instanceSection}>
+                    <ScrollView>
+                        {names.map((name, index) => {
+                            return (
+                                <Instance
+                                    deleteName={() => deleteName(name)}
+                                    key={index}
+                                    name={name}
+                                />
+                            );
+                        })}
+                    </ScrollView>
+                </View>
+            )}
+            {state === "wheel" && (
+                <Wheel
+                    numberOfSegments={names.length}
+                    data={names}
+                    updater={updateState}
+                />
+            )}
             {inputActive && (
                 <View style={styles.instanceAdderSection}>
                     <InstanceAdder
@@ -94,30 +138,33 @@ export const Entscheider = () => {
                     />
                 </View>
             )}
-            <View style={styles.buttonSection}>
-                <TouchableHighlight style={styles.button}>
-                    <Button
-                        color={decideColor}
-                        onPress={decide}
-                        title="Decide"
-                    />
-                </TouchableHighlight>
-                <TouchableHighlight style={styles.button}>
-                    <Button color="#1c1c1c" onPress={clear} title="Clear" />
-                </TouchableHighlight>
-                <TouchableHighlight style={styles.button}>
-                    <Button
-                        onPress={() => {
-                            setInputActive(() => {
-                                return inputActive ? false : true;
-                            });
-                            setDecisionActive(false);
-                        }}
-                        title="New Element"
-                        color="#1c1c1c"
-                    />
-                </TouchableHighlight>
-            </View>
+            {state === "table" && (
+                <View style={styles.buttonSection}>
+                    <TouchableHighlight style={styles.button}>
+                        <Button
+                            color={decideColor}
+                            onPress={decide}
+                            title="Decide"
+                        />
+                    </TouchableHighlight>
+                    <TouchableHighlight style={styles.button}>
+                        <Button color="#1c1c1c" onPress={clear} title="Clear" />
+                    </TouchableHighlight>
+                    <TouchableHighlight style={styles.button}>
+                        <Button
+                            onPress={() => {
+                                setInputActive(() => {
+                                    return inputActive ? false : true;
+                                });
+                                setDecisionActive(false);
+                            }}
+                            title="New Element"
+                            color="#1c1c1c"
+                        />
+                    </TouchableHighlight>
+                </View>
+            )}
+            {state === "wheel" && <View style={styles.buttonSection}></View>}
         </View>
     );
 };
@@ -127,7 +174,7 @@ const { width, height } = Dimensions.get("window");
 const styles = StyleSheet.create({
     header: {
         color: "white",
-        fontSize: 45,
+        fontSize: 40,
         fontWeight: "bold",
         textShadowColor: "#BB86FC",
         textShadowOffset: { width: 2, height: 2 },
@@ -150,7 +197,7 @@ const styles = StyleSheet.create({
         height: height * 0.45,
         width: 260,
         position: "absolute",
-        top: 100,
+        top: 95,
         backgroundColor: "#262626",
         borderRadius: 15,
     },
@@ -170,7 +217,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         width: 310,
         height: 310,
-        borderRadius: 500,
+        borderRadius: 155,
         backgroundColor: "#121212",
         borderWidth: 2,
         borderColor: "#03DAC5",
@@ -181,11 +228,29 @@ const styles = StyleSheet.create({
         position: "absolute",
         width: 350,
         height: 350,
-        borderRadius: 500,
+        borderRadius: 175,
         backgroundColor: "#121212",
         borderWidth: 2,
         borderColor: "#03DAC5",
         top: 70,
         left: -45,
+    },
+    wheelButton: {
+        borderRadius: 100,
+        position: "absolute",
+        height: 30,
+        width: 30,
+        top: 15,
+        left: -20,
+        overflow: "hidden",
+    },
+    tableButton: {
+        borderRadius: 5,
+        position: "absolute",
+        height: 30,
+        width: 30,
+        top: 15,
+        left: 250,
+        overflow: "hidden",
     },
 });
