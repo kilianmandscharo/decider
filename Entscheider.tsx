@@ -21,7 +21,7 @@ export const Entscheider = () => {
     const [input, setInput] = useState("");
     const [state, setState] = useState("table");
 
-    console.log("deciderWinner: ", winner);
+    //console.log("deciderWinner: ", winner);
 
     const clickHandler = (name: string) => {
         if (name === "") {
@@ -76,7 +76,7 @@ export const Entscheider = () => {
             <TouchableHighlight style={styles.wheelButton}>
                 <Button
                     title=""
-                    color="#03DAC5"
+                    color="#BB86FC"
                     onPress={() => {
                         if (names.length === 0) {
                             return;
@@ -89,7 +89,7 @@ export const Entscheider = () => {
             <TouchableHighlight style={styles.tableButton}>
                 <Button
                     title=""
-                    color="#03DAC5"
+                    color="#BB86FC"
                     onPress={() => {
                         if (names.length === 0) {
                             return;
@@ -164,7 +164,13 @@ export const Entscheider = () => {
                     </TouchableHighlight>
                 </View>
             )}
-            {state === "wheel" && <View style={styles.buttonSection}></View>}
+            {state === "wheel" && (
+                <View style={styles.buttonSection}>
+                    <View style={styles.pin1}></View>
+                    <View style={styles.pin2}></View>
+                    <Text style={styles.spinText}>Spin it!</Text>
+                </View>
+            )}
         </View>
     );
 };
@@ -174,18 +180,20 @@ const { width, height } = Dimensions.get("window");
 const styles = StyleSheet.create({
     header: {
         color: "white",
-        fontSize: 40,
+        fontSize: 35,
         fontWeight: "bold",
         textShadowColor: "#BB86FC",
         textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 2,
+        fontFamily: "monospace",
     },
     headerSection: {
-        marginBottom: 40,
+        marginTop: 10,
+        marginBottom: 50,
         alignItems: "center",
     },
     instanceSection: {
-        height: height * 0.45,
+        height: 290,
         width: 260,
         backgroundColor: "#1c1c1c",
         paddingLeft: 20,
@@ -194,16 +202,16 @@ const styles = StyleSheet.create({
         borderRadius: 15,
     },
     instanceAdderSection: {
-        height: height * 0.45,
+        height: 290,
         width: 260,
         position: "absolute",
-        top: 95,
+        top: 106.5,
         backgroundColor: "#262626",
         borderRadius: 15,
     },
     buttonSection: {
-        height: height * 0.2,
-        marginTop: 55,
+        height: 140,
+        marginTop: 45,
     },
     button: {
         marginBottom: 15,
@@ -221,7 +229,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#121212",
         borderWidth: 2,
         borderColor: "#03DAC5",
-        top: 90,
+        top: 97,
         left: -25,
     },
     circle2: {
@@ -232,25 +240,61 @@ const styles = StyleSheet.create({
         backgroundColor: "#121212",
         borderWidth: 2,
         borderColor: "#03DAC5",
-        top: 70,
+        top: 77,
         left: -45,
     },
     wheelButton: {
         borderRadius: 100,
         position: "absolute",
-        height: 30,
-        width: 30,
-        top: 15,
-        left: -20,
+        height: 35,
+        width: 35,
+        top: 18,
+        left: -30,
         overflow: "hidden",
     },
     tableButton: {
         borderRadius: 5,
         position: "absolute",
-        height: 30,
-        width: 30,
-        top: 15,
-        left: 250,
+        height: 35,
+        width: 35,
+        top: 18,
+        left: 257,
         overflow: "hidden",
+    },
+    spinText: {
+        color: "white",
+        textAlign: "center",
+        fontSize: 50,
+        paddingTop: 20,
+        fontFamily: "sans-serif",
+        fontWeight: "bold",
+        textShadowColor: "#BB86FC",
+        textShadowRadius: 1,
+        textShadowOffset: { width: 2, height: 2 },
+    },
+    pin1: {
+        position: "absolute",
+        width: 0,
+        height: 0,
+        borderBottomWidth: 15,
+        borderBottomColor: "transparent",
+        borderRightWidth: 40,
+        borderRightColor: "#BB86FC",
+        borderTopWidth: 15,
+        borderTopColor: "transparent",
+        bottom: 70,
+        right: 0,
+    },
+    pin2: {
+        position: "absolute",
+        width: 0,
+        height: 0,
+        borderLeftWidth: 40,
+        borderLeftColor: "#BB86FC",
+        borderBottomWidth: 15,
+        borderBottomColor: "transparent",
+        borderTopWidth: 15,
+        borderTopColor: "transparent",
+        bottom: 70,
     },
 });

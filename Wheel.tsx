@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Component } from "react";
-import { View, Text as RNText, Animated } from "react-native";
+import { View, Text as RNText, Animated, StyleSheet } from "react-native";
 import { PanGestureHandler, State } from "react-native-gesture-handler";
 import { G, Path, Svg, TSpan, Text } from "react-native-svg";
 import * as d3Shape from "d3-shape";
@@ -23,7 +23,7 @@ export class Wheel extends Component<Props & PassedProps, any> {
         super(props);
     }
 
-    width = 310;
+    width = 300;
     wheelSize = this.width * 1;
     fontSize = 15;
     oneTurn = 360;
@@ -37,6 +37,7 @@ export class Wheel extends Component<Props & PassedProps, any> {
         const arcs = d3Shape.pie()(data);
         const colors = color({
             hue: "#BB86FC",
+            luminosity: "dark",
             count: this.props.numberOfSegments,
         });
 
@@ -75,12 +76,20 @@ export class Wheel extends Component<Props & PassedProps, any> {
                 });
             }
             this.angle = event.value;
+            /* console.log("angle: ", this.angle); */
         });
     }
 
     _renderSvgWheel = () => {
         return (
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
+                <View style={styles.pin}></View>
                 <Animated.View
                     style={{
                         alignItems: "center",
@@ -163,12 +172,24 @@ export class Wheel extends Component<Props & PassedProps, any> {
     };
 
     _getWinnerIndex = () => {
-        const deg = Math.abs(Math.round(this.angle % this.oneTurn));
-        return Math.floor(deg / this.angleBySegment);
+        if (this.angle <= 0 || this.angle === 360) {
+            const deg = Math.abs(Math.round(this.angle % this.oneTurn));
+            const index = Math.round(deg / this.angleBySegment);
+            /* console.log("index :", index);
+            console.log("deg :", deg); */
+            return index;
+        } else {
+            const deg = Math.abs(Math.round(this.angle % this.oneTurn));
+            const index =
+                this.props.data.length - Math.round(deg / this.angleBySegment);
+            /* console.log("index :", index);
+            console.log("deg :", deg); */
+            return index;
+        }
     };
 
     _winnerUpdater = () => {
-        console.log("wheelWinner: ", this.state.winner);
+        //console.log("wheelWinner: ", this.state.winner);
         this.props.updater(this.state.winner);
     };
 
@@ -199,10 +220,6 @@ export class Wheel extends Component<Props & PassedProps, any> {
         }
     };
 
-    /* _renderWinner = () => {
-        return <RNText>Winner: {this.state.winner}</RNText>;
-    }; */
-
     render() {
         return (
             <PanGestureHandler
@@ -211,17 +228,29 @@ export class Wheel extends Component<Props & PassedProps, any> {
             >
                 <View
                     style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
+                        height: 290,
+                        width: 260,
                     }}
                 >
                     {this._renderSvgWheel()}
-                    {/* {this.state.finished &&
-                        this.state.enabled &&
-                        this._renderWinner()} */}
                 </View>
             </PanGestureHandler>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    pin: {
+        position: "absolute",
+        width: 0,
+        height: 0,
+        borderLeftWidth: 20,
+        borderLeftColor: "transparent",
+        borderRightWidth: 20,
+        borderRightColor: "transparent",
+        borderTopWidth: 40,
+        borderTopColor: "#03DAC5",
+        top: -20,
+        zIndex: 100,
+    },
+});
