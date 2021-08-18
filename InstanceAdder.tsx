@@ -1,10 +1,18 @@
 import React from "react";
 import { useState } from "react";
-import { View, Button, TextInput, TouchableHighlight } from "react-native";
+import {
+    View,
+    Button,
+    TextInput,
+    TouchableHighlight,
+    Dimensions,
+} from "react-native";
+
+const { width, height } = Dimensions.get("window");
 
 interface Props {
-    clicker: (name: string) => void;
-    handler: (text: string) => void;
+    handleClick: (name: string) => void;
+    handleChange: (text: string) => void;
     input: string;
 }
 
@@ -23,21 +31,20 @@ export const InstanceAdder = (props: Props) => {
                     borderStyle: "solid",
                     borderColor: "white",
                     borderWidth: 1,
-                    height: 40,
-                    width: 180,
-                    padding: 10,
-                    marginBottom: 30,
-                    borderRadius: 10,
+                    height: height / 18,
+                    width: width / 2,
+                    marginBottom: height / 25,
+                    borderRadius: width / 30,
                     textAlign: "center",
                 }}
                 placeholder="Enter Name"
                 placeholderTextColor="white"
-                onChangeText={(text) => props.handler(text)}
-                maxLength={15}
+                onChangeText={(text) => props.handleChange(text)}
+                maxLength={10}
             />
             <TouchableHighlight
                 style={{
-                    borderRadius: 5,
+                    borderRadius: width / 50,
                     overflow: "hidden",
                     borderWidth: 1,
                     borderStyle: "solid",
@@ -47,7 +54,7 @@ export const InstanceAdder = (props: Props) => {
                 <Button
                     color="#2f2f2f"
                     title="Create"
-                    onPress={() => props.clicker(props.input)}
+                    onPress={() => props.handleClick(props.input)}
                 />
             </TouchableHighlight>
         </View>

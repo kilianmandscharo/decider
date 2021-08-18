@@ -1,10 +1,21 @@
 import React, { useEffect, useState, Component } from "react";
-import { View, Text as RNText, Animated, StyleSheet } from "react-native";
+import {
+    View,
+    Text as RNText,
+    Animated,
+    StyleSheet,
+    Dimensions,
+} from "react-native";
 import { PanGestureHandler, State } from "react-native-gesture-handler";
 import { G, Path, Svg, TSpan, Text } from "react-native-svg";
 import * as d3Shape from "d3-shape";
 import color from "randomcolor";
 import { snap } from "@popmotion/popcorn";
+
+const { width, height } = Dimensions.get("window");
+
+// This component was built by following this tutorial:
+// https://www.youtube.com/watch?v=tc3G-bO1p8Q&t=1781s
 
 interface Props extends React.ClassAttributes<any> {
     numberOfSegments: number;
@@ -23,8 +34,8 @@ export class Wheel extends Component<Props & PassedProps, any> {
         super(props);
     }
 
-    width = 300;
-    wheelSize = this.width * 1;
+    wheelWidth = width / 1.4;
+    wheelSize = this.wheelWidth * 1;
     fontSize = 15;
     oneTurn = 360;
     angleBySegment = this.oneTurn / this.props.numberOfSegments;
@@ -45,7 +56,7 @@ export class Wheel extends Component<Props & PassedProps, any> {
             const instance = d3Shape
                 .arc()
                 .padAngle(0.01)
-                .outerRadius(this.width / 2)
+                .outerRadius(this.wheelWidth / 2)
                 .innerRadius(15);
 
             return {
@@ -115,12 +126,12 @@ export class Wheel extends Component<Props & PassedProps, any> {
                     <Svg
                         width={this.wheelSize}
                         height={this.wheelSize}
-                        viewBox={`0 0 ${this.width} ${this.width}`}
+                        viewBox={`0 0 ${this.wheelWidth} ${this.wheelWidth}`}
                         style={{
                             transform: [{ rotate: `-${this.angleOffset}deg` }],
                         }}
                     >
-                        <G y={this.width / 2} x={this.width / 2}>
+                        <G y={this.wheelWidth / 2} x={this.wheelWidth / 2}>
                             {this._wheelPaths.map((arc, i) => {
                                 const [x, y] = arc.centroid;
                                 const number = arc.value.toString();
@@ -228,8 +239,10 @@ export class Wheel extends Component<Props & PassedProps, any> {
             >
                 <View
                     style={{
-                        height: 290,
-                        width: 260,
+                        height: height / 2.3,
+                        width: width / 1.5,
+
+                        marginTop: height / 20,
                     }}
                 >
                     {this._renderSvgWheel()}
@@ -244,13 +257,13 @@ const styles = StyleSheet.create({
         position: "absolute",
         width: 0,
         height: 0,
-        borderLeftWidth: 20,
+        borderLeftWidth: width / 20,
         borderLeftColor: "transparent",
-        borderRightWidth: 20,
+        borderRightWidth: width / 20,
         borderRightColor: "transparent",
-        borderTopWidth: 40,
+        borderTopWidth: width / 10,
         borderTopColor: "#03DAC5",
-        top: -20,
+        top: -height / 32,
         zIndex: 100,
     },
 });

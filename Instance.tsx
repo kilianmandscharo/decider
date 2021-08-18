@@ -1,5 +1,13 @@
 import React from "react";
-import { Button, View, Text, TouchableHighlight } from "react-native";
+import {
+    Button,
+    View,
+    Text,
+    TouchableHighlight,
+    Dimensions,
+} from "react-native";
+
+const { width, height } = Dimensions.get("window");
 
 interface Props {
     name: string;
@@ -10,19 +18,21 @@ export const Instance = (props: Props) => {
     return (
         <View
             style={{
-                flex: 2,
+                flex: 1,
                 flexDirection: "row",
                 justifyContent: "space-between",
-                marginBottom: 10,
-                height: 50,
+                marginBottom: height / 50,
+                height: height / 15,
                 alignItems: "center",
             }}
         >
-            <Text style={{ color: "white", fontSize: 22 }}>{props.name}</Text>
+            <Text style={{ color: "white", fontSize: width / 18 }}>
+                {props.name}
+            </Text>
             <TouchableHighlight
                 style={{
-                    width: 30,
-                    borderRadius: 5,
+                    width: width / 14,
+                    borderRadius: width / 50,
                     overflow: "hidden",
                 }}
             >
