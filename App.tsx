@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Entscheider } from "./Entscheider";
+import { Entscheider } from "./components/Entscheider";
 
 export default function App() {
     return (

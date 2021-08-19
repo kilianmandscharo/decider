@@ -73,6 +73,12 @@
 		<string>Cabin-Regular.ttf</string>
 		<string>Cabin-SemiBold.ttf</string>
 		<string>Cabin-SemiBoldItalic.ttf</string>
+		<string>Orbitron-Black.ttf</string>
+		<string>Orbitron-Bold.ttf</string>
+		<string>Orbitron-ExtraBold.ttf</string>
+		<string>Orbitron-Medium.ttf</string>
+		<string>Orbitron-Regular.ttf</string>
+		<string>Orbitron-SemiBold.ttf</string>
 	</array>
 </dict>
 </plist>

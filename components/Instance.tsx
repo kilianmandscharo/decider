@@ -6,8 +6,7 @@ import {
     TouchableHighlight,
     Dimensions,
 } from "react-native";
-
-const { width, height } = Dimensions.get("window");
+import { height, width } from "../functional/Constants";
 
 interface Props {
     name: string;

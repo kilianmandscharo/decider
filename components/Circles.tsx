@@ -3,8 +3,7 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import { Animated, Dimensions, View } from "react-native";
 import Svg, { Circle, G } from "react-native-svg";
-
-const { width, height } = Dimensions.get("window");
+import { turquoise, width } from "../functional/Constants";
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -17,11 +16,17 @@ const circumferenceC1 = 2 * Math.PI * radiusC1;
 const radiusC2 = Math.round(width / 2.4);
 const circumferenceC2 = 2 * Math.PI * radiusC1;
 
-const Circles = () => {
+interface CircleProps {
+    state: string;
+}
+
+const Circles = ({ state }: CircleProps) => {
     const fillValueC1 = useRef(new Animated.Value(circumferenceC1)).current;
-    const fillValueC2 = useRef(new Animated.Value(circumferenceC1)).current;
+    const fillValueC2 = useRef(new Animated.Value(circumferenceC2)).current;
 
     useEffect(() => {
+        fillValueC1.setValue(circumferenceC1);
+        fillValueC2.setValue(circumferenceC2);
         Animated.timing(fillValueC1, {
             toValue: 0,
             duration: 1000,
@@ -32,10 +37,10 @@ const Circles = () => {
             duration: 1000,
             useNativeDriver: true,
         }).start();
-    }, []);
+    }, [state]);
 
     return (
-        <View style={{ position: "absolute", top: 0 }}>
+        <View style={{ position: "absolute", zIndex: -100 }}>
             <Svg
                 style={{
                     height: radiusC1 * 2,
@@ -46,7 +51,7 @@ const Circles = () => {
                 <AnimatedCircle
                     cx="50%"
                     cy="50%"
-                    stroke="#03DAC5"
+                    stroke={turquoise}
                     strokeWidth={strokeWidth}
                     r={radiusC1}
                     fill="transparent"
@@ -58,7 +63,7 @@ const Circles = () => {
                     <AnimatedCircle
                         cx="50%"
                         cy="50%"
-                        stroke="#03DAC5"
+                        stroke={turquoise}
                         strokeWidth={strokeWidth}
                         r={radiusC2}
                         fill="transparent"

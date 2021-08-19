@@ -6,6 +6,9 @@
     "web": "expo start --web",
     "eject": "expo eject"
   },
+  "rnpm": { 
+    "assets": [ "./src/assets/fonts" ] 
+  },
   "dependencies": {
     "@popmotion/popcorn": "^0.4.4",
     "d3-shape": "^2.1.0",
